@@ -77,6 +77,11 @@ app.post('/api/login', async (req, res) => {
 	}
 })
 
+app.post('/api/tohum', async(req, res) => {
+	console.log("req.body:",req.body)
+	res.json("hihi")
+})
+
 
 app.listen(4000, (err,success) => {
     if(err) {
