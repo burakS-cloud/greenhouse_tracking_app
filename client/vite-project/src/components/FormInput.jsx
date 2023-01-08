@@ -12,8 +12,9 @@ const FormInput = (props) => {
 
   return (
     <div className={FormInputCSS.formInput}>
-      <label>{label}</label>
+      <label className={FormInputCSS.labelFormData}>{label}</label>
       <input
+        className={FormInputCSS.inputData}
         {...inputProps}
         onChange={onChange}
         onBlur={handleFocus}
@@ -22,7 +23,7 @@ const FormInput = (props) => {
         // }
         focused={focused.toString()}
       />
-      <span>{errorMessage}</span>
+      <span className={FormInputCSS.spanFormData}>{errorMessage}</span>
     </div>
   );
 };

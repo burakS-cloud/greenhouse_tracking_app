@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Form } from "react-router-dom";
 // import "./app.css";
 import DataEntryComponentCSS from "./DataEntry.module.css"
 import FormInput from "./FormInput"
 import FormSelect from "./FormSelect";
 import axios from 'axios';
 import { useForm } from "react-hook-form";
+import { useLocation } from "react-router-dom"
 
 
 
@@ -19,6 +19,30 @@ const DataEntryComponent = (props) => {
     fiyat: "",
     İşlem: ""  
   });
+  // console.log("props:", props);
+
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  console.log("pathname var:", pathname)
+
+   const miktarTuruArr = [
+    "Miktar Türü Seçiniz",
+    "Kg",
+    "Adet"
+   ]
+
+   const islemArr = [
+    "İşlem Seçiniz",
+    "Ekle",
+    "Çıkart"
+   ]
+
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const yyyy = today.getFullYear();
+    const finalizedToday = `${yyyy}-${mm}-${dd}`
 
   const inputs = [
     {
@@ -26,20 +50,20 @@ const DataEntryComponent = (props) => {
       name: "alisTarihi",
       type: "date",
       placeholder: "Alış Tarihi",
-      // errorMessage:
-      //   "Geçerli bir tarih giriniz.",
+      dateFormat: "dd-mm-yyyy",
+      min: finalizedToday,
+      errorMessage:"Geçerli bir tarih giriniz.",
       label: "Alış Tarihi",
-    //   pattern: "^[A-Za-z0-9]{2,25}$",
-      // required: true,
+      required: true,
     },
     {
       id: 2,
       name: "tur",
       type: "select",
       placeholder: "Türü",
-      // errorMessage: "Geçerli bir tür seçiniz",
+      errorMessage: "Geçerli bir tür seçiniz",
       label: "Tür",
-      // required: true,
+      required: true,
     },
     {
       id: 3,
@@ -55,9 +79,9 @@ const DataEntryComponent = (props) => {
       name: "miktarTuru",
       type: "select",
       placeholder: "Miktar Türü",
-      // errorMessage: "Geçerli bir miktar türü seçiniz",
+      errorMessage: "Geçerli bir miktar türü seçiniz",
       label: "Miktar Türü",
-      // required: true,
+      required: true,
     },
     {
       id: 5,
@@ -73,62 +97,19 @@ const DataEntryComponent = (props) => {
       name: "İşlem",
       type: "select",
       placeholder: "İşlem",
-      // errorMessage: "Geçerli bir işlem türü seçiniz.",
+      errorMessage: "Geçerli bir işlem türü seçiniz.",
       label: "İşlem",
-      // required: true,
+      required: true,
     },
     
-    // {
-    //   id: 3,
-    //   name: "birthday",
-    //   type: "date",
-    //   placeholder: "Birthday",
-    //   label: "Birthday",
-    // },
-    // {
-    //   id: 4,
-    //   name: "password",
-    //   type: "password",
-    //   placeholder: "Password",
-    //   errorMessage:
-    //     "Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!",
-    //   label: "Password",
-    //   pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
-    //   required: true,
-    // },
-    // {
-    //   id: 5,
-    //   name: "confirmPassword",
-    //   type: "password",
-    //   placeholder: "Confirm Password",
-    //   errorMessage: "Passwords don't match!",
-    //   label: "Confirm Password",
-    //   pattern: values.password,
-    //   required: true,
-    // },
   ];
-
-  // const handleSubmit = async(e) => {
-
-  //   const response = await axios.post(`http://localhost:4000/api/tohum`,
-  //               {
-                  
-  //               },
-  //               {
-  //                 headers: { "Content-Type": "application/json" },
-  //               }
-  //             );
-  //             if (response.data) {
-  //               console.log(response.data);
-  //             }
-  //           }
-
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   console.log("values:", values)
+  // console.log("turArr in dataentry:", props?.turArr)
   return (
     <div className={DataEntryComponentCSS.dataEntryWrapper}>
       <form className={DataEntryComponentCSS.dataEntryForm} onSubmit={handleSubmit(async (data, event) => {
@@ -138,10 +119,17 @@ const DataEntryComponent = (props) => {
                 fiyat: data?.fiyat,
                 miktar: data?.miktar,
               });
-        const response = await axios.post(`http://localhost:4000/api/tohum`,
+        const response = await axios.post(`http://localhost:4000/api${pathname}`,
                 {
+                  fiyat: values?.fiyat,
+                  miktar: values?.miktar,
+                  miktarTuru: values?.miktarTuru,
+                  islem: values?.İşlem,
+                  tur: values?.tur,
+                  alisTarihi: values?.alisTarihi
+
                   // fakeDataForNow: {fiyat:150, miktar:280}
-                  form: { fiyat: values?.fiyat, miktar: values?.miktar },
+                  // form: { fiyat: values?.fiyat, miktar: values?.miktar },
                 },
                 {
                   headers: { "Content-Type": "application/json" },
@@ -154,7 +142,8 @@ const DataEntryComponent = (props) => {
         <h1 className={DataEntryComponentCSS.dataEntryHeader}>{props.title}</h1>
         {inputs.map((input) => {
             return (
-                input.type === "select" ? <FormSelect key={input.id} {...input} value={values[input.name]} onChange={onChange}/> : <FormInput key={input.id} {...input} value={values[input.name]} onChange={onChange}/>
+                // input.type === "select" && input.id === 2 ? <FormSelect balikTurArr={props.turArr} key={input.id} {...input} value={values[input.name]} onChange={onChange}/> : input.type === "select" ? <FormSelect key={input.id} {...input} value={values[input.name]} onChange={onChange}/> : <FormInput key={input.id} {...input} value={values[input.name]} onChange={onChange}/>
+                input.type === "select" ? <FormSelect miktarTuruArr={miktarTuruArr} islemArr={islemArr} turArr={props.turArr} key={input.id} {...input} value={values[input.name]} onChange={onChange}/> : <FormInput key={input.id} {...input} value={values[input.name]} onChange={onChange}/>
             )
             
         })}

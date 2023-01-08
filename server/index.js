@@ -79,8 +79,75 @@ app.post('/api/login', async (req, res) => {
 
 app.post('/api/tohum', async(req, res) => {
 	console.log("req.body:",req.body)
-	res.json("hihi")
+	res.json("tohum route")
 })
+
+app.post("/api/balik", async (req, res) => {
+  console.log("req.body:", req.body);
+  res.json("balik route");
+});
+
+app.post("/api/balikyemi", async (req, res) => {
+  console.log("req.body:", req.body);
+  
+  let tabletYemTotal = 0;
+  let pulYemTotal = 0;
+  let cipsYemTotal = 0;
+  let yavruYemTotal = 0;
+  let jelYemTotal = 0;
+  let kurutulmusYemTotal = 0;
+  let dondurulmusYemTotal = 0;
+  let tatilYemTotal = 0;
+  const { fiyat, miktar, miktarTuru, islem, tur, alisTarihi } = req.body;
+  const toplamFiyat = miktar * fiyat;
+  const newBalikYemi = await BalikYemi.create({
+    alisTarihi,
+    fiyat,
+    miktarTuru,
+    miktar,
+    islem,
+    tur,
+    toplamFiyat,
+  });
+
+  
+  const tabletBalikYemi = await BalikYemi.find({tur: 'Tablet Yem'})
+  if(tabletBalikYemi) {
+	const tabletBalikYemiLength = tabletBalikYemi.length;
+		for (let i = 0; i < tabletBalikYemiLength; i++) {
+			if(tabletBalikYemi[i].islem === 'Ekle'){
+				tabletYemTotal += tabletBalikYemi[i].miktar;
+			} else {
+				tabletYemTotal -= tabletBalikYemi[i].miktar;
+			}		
+		}
+  }
+  const pulBalikYemi = await BalikYemi.find({ tur: "Pul Yem" });
+  if (pulBalikYemi) {
+    const pulBalikYemiLength = pulBalikYemi.length;
+    for (let i = 0; i < eklenenBalikYemiLength; i++) {
+      if (pulBalikYemi[i].islem === "Ekle") {
+        pulYemTotal += pulBalikYemi[i].miktar;
+      } else {
+        pulYemTotal -= pulBalikYemi[i].miktar;
+      }
+    }
+  }
+  
+//   const çıkarılanBalikYemi = await BalikYemi.find({tur: 'Tablet Yem', islem: 'Çıkart'})
+//   const çıkarılanBalikYemiLength = çıkarılanBalikYemi.length;
+//   for (let i = 0; i < çıkarılanBalikYemiLength; i++) {
+//     sum -= çıkarılanBalikYemi[i].miktar;
+//   }
+//   console.log("elde kalan:", )
+  console.log("remaining:", tabletYemTotal);
+  res.json("balikyemi route");
+});
+
+app.post("/api/mamul", async (req, res) => {
+  console.log("req.body:", req.body);
+  res.json("mamul route");
+});
 
 
 app.listen(4000, (err,success) => {
