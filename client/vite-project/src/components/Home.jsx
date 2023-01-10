@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from "react-router-dom";
 import Weather from './Weather';
 import Navbar from './Navbar';
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import LineChart from "./LineChart"
+// import LineChart from "./LineChart"
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
 
 const Home = () => {
     let navigate = useNavigate();
@@ -64,13 +66,90 @@ const Home = () => {
     //     console.log("inside interval")
     //  }, 10000);
 
+    {/* <LineChart chartData={userData}/> */}
+
+    // let saatToPass = Math.floor(data?.tarih / 60);
+    // let dakikaToPass = data?.tarih % 60;
+    // let tarihToPass = `${saatToPass}:${dakikaToPass}`
+          let hour = ""
+          let minute = ""
+          let finalTime = ""
+      if(data) {
+          
+            if(Math.floor(data?.tarih / 60).toString().length < 2){
+              let unprocessedHour = Math.floor(data?.tarih / 60);
+              let formattedHour = `0${unprocessedHour}`;
+              hour = formattedHour;
+            } else {
+              hour = Math.floor(data?.tarih / 60).toString();
+            }
+
+            if(data?.tarih % 60 < 10){
+              let unprocessedMin = data?.tarih % 60;
+              let formattedMin = `0${unprocessedMin}`;
+              minute = formattedMin;
+            } else {
+              minute = (data?.tarih % 60).toString();
+            }
+
+          finalTime = `${hour}:${minute}`
+          console.log("finalTime:", finalTime);
+    }
+   
+
   return (
     <>
     <Navbar/>
     {/* <button onClick={() => navigate('/about')}>Go About</button> */}
     <div>
-      <div style={{display:'flex', marginTop:'1em', justifyContent:'flex-end' }}>
-        {/* <LineChart chartData={userData}/> */}
+      <div style={{display:'flex', marginTop:'1em', justifyContent:'space-around' }}> 
+            <Box
+            sx={{
+              display: 'flex',
+              flexDirection:'column',
+              justifyContent:'center',
+              flexWrap: 'wrap',
+              // border:'1px solid red',
+              '& > :not(style)': {
+                m: 1,
+                width: 200,
+                height: 150,
+              },
+            }}
+          >
+            <Paper sx={{paddingBottom:'1.5em', background:'lightblue'}} children={<div>
+              <p style={{textAlign:'center', fontSize:'2rem'}}>Sıcaklık</p>
+              <p style={{textAlign:'center', paddingLeft:0, fontWeight:'bold', fontSize:'3rem', marginTop:'-.3em'}}>{data?.sicaklik}</p>
+            </div>} />
+            <Paper sx={{paddingBottom:'1.5em', background:'lightblue'}} children={<div>
+              <p style={{textAlign:'center', fontSize:'2rem'}}>Su Seviyesi</p>
+              <p style={{textAlign:'center', paddingLeft:0, fontWeight:'bold', fontSize:'3rem', marginTop:'-.3em'}}>{data?.suSeviyesi}</p>
+            </div>} />
+          </Box>  
+
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection:'column',
+              justifyContent:'center',
+              flexWrap: 'wrap',
+              '& > :not(style)': {
+                m: 1,
+                width: 200,
+                height: 150,
+              },
+            }}
+          >
+            <Paper sx={{paddingBottom:'1.5em', background:'lightblue'}} children={<div>
+              <p style={{textAlign:'center', fontSize:'2rem'}}>Nem</p>
+              <p style={{textAlign:'center', paddingLeft:0, fontWeight:'bold', fontSize:'3rem', marginTop:'-.3em'}}>{data?.nem}</p>
+            </div>} />
+            <Paper sx={{paddingBottom:'1.5em', background:'lightblue'}} children={<div>
+              <p style={{textAlign:'center', fontSize:'2rem'}}>Saat</p>
+              <p style={{textAlign:'center', paddingLeft:0, fontWeight:'bold', fontSize:'3rem', marginTop:'-.3em'}}>{finalTime}</p>
+            </div>} />
+          </Box>
+
         <Weather/>
       </div>
     </div> 

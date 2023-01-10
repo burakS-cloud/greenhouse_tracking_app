@@ -678,14 +678,14 @@ app.get("/api/balik", async (req, res) => {
 
 app.get('/api/data', async(req,res) => {
   const fetchedData = await Data.find({})
-  // const lastData = fetchedData[fetchedData.length -1]
-  let lastSevenArr = [];
-  for (let i = fetchedData.length - 1; i >= fetchedData.length - 7; i--) {
-    lastSevenArr.push(fetchedData[i]);
-  }
-  let reversedLastSevenArr = lastSevenArr.reverse();
-  console.log("reversedLastSevenArr:", reversedLastSevenArr);
-  res.json(reversedLastSevenArr);
+  const lastData = fetchedData[fetchedData.length -1]
+  // let lastSevenArr = [];
+  // for (let i = fetchedData.length - 1; i >= fetchedData.length - 7; i--) {
+  //   lastSevenArr.push(fetchedData[i]);
+  // }
+  // let reversedLastSevenArr = lastSevenArr.reverse();
+  console.log("lastData:", lastData);
+  res.json(lastData);
 })
 
 app.listen(4000, (err, success) => {
