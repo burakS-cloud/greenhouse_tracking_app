@@ -10,12 +10,12 @@ export const SidebarData = [
     icon: <AiIcons.AiFillHome />,
     cName: 'nav-text'
   },
-  {
-    title: 'About',
-    path: '/about',
-    icon: <IoIcons.IoIosPaper />,
-    cName: 'nav-text'
-  },
+  // {
+  //   title: 'About',
+  //   path: '/about',
+  //   icon: <IoIcons.IoIosPaper />,
+  //   cName: 'nav-text'
+  // },
   {
     title: 'Weather',
     path: '/weather',
@@ -23,21 +23,27 @@ export const SidebarData = [
     cName: 'nav-text'
   },
   {
-    title: 'Team',
-    path: '/team',
+    title: 'Tohum',
+    path: '/tohum',
     icon: <IoIcons.IoMdPeople />,
     cName: 'nav-text'
   },
   {
-    title: 'Messages',
-    path: '/messages',
+    title: 'Balık',
+    path: '/balik',
     icon: <FaIcons.FaEnvelopeOpenText />,
     cName: 'nav-text'
   },
   {
-    title: 'Support',
-    path: '/support',
-    icon: <IoIcons.IoMdHelpCircle />,
+    title: 'Balık Yemi',
+    path: '/balikyemi',
+    icon: <FaIcons.FaEnvelopeOpenText />,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Mamül',
+    path: '/mamul',
+    icon: <FaIcons.FaEnvelopeOpenText />,
     cName: 'nav-text'
   },
   {

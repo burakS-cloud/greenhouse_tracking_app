@@ -47,7 +47,7 @@ const Weather = () => {
     <>
     {pathname === '/weather' ? <Navbar/> : ""}
     
-    <div style={{marginTop:'1em'}}>
+    <div style={{marginTop:'1em', width:'50%', marginRight:'1em', marginLeft:'2em'}}>
     <ReactWeather     
       isLoading={isLoading}
       errorMessage={errorMessage}

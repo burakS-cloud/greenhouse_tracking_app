@@ -11,14 +11,21 @@ import BalikYemi from "./components/BalikYemi"
 import Mamul from "./components/Mamul"
 import { AuthProvider } from './contexts/auth';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const client = new QueryClient({defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    }
+  }});
 
   return (
     <>
     <AuthProvider>
+     <QueryClientProvider client={client}>
     <Router>
       <Routes>
         <Route path='/login' element={<Login/>}/>
@@ -32,6 +39,7 @@ function App() {
         <Route path='/mamul' element={<Mamul/>}></Route>
       </Routes>
     </Router>
+     </QueryClientProvider>
     </AuthProvider>
  
     </>

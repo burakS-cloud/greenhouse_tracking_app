@@ -111,6 +111,7 @@ const DataEntryComponent = (props) => {
   console.log("values:", values)
   // console.log("turArr in dataentry:", props?.turArr)
   return (
+    <>
     <div className={DataEntryComponentCSS.dataEntryWrapper}>
       <form className={DataEntryComponentCSS.dataEntryForm} onSubmit={handleSubmit(async (data, event) => {
         event.preventDefault();
@@ -147,9 +148,10 @@ const DataEntryComponent = (props) => {
             )
             
         })}
-        <button className={DataEntryComponentCSS.dataEntryButton}>Kaydet</button>
+        <button className={DataEntryComponentCSS.dataEntryButton} onClick={props.refetch}>Kaydet</button>
       </form>
     </div>
+    </>
   );
 };
 
